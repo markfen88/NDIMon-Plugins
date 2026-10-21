@@ -17,8 +17,11 @@ Debian arm64/armhf, Ubuntu amd64 and other images have no plugin binary in this
 release. Do not substitute another platform's archive. A source build requires
 its own native bundle pin and compatibility entry.
 
-Each plugin archive has the standard host name
-`tessera-plugin_<plugin-version>_<arch>.tar.gz`. Its catalog additionally states
+Each download archive uses the name
+`tessera-plugin_0.2.0-beta1_<arch>.tar.gz`. Download filenames use `-beta`
+because GitHub rewrites `~`; the manifest and catalog keep `0.2.0~beta1`.
+Use these static platform catalogs, rather than deriving a version from a
+GitHub release asset name. Each catalog additionally states
 the platform, version, byte size, exact download URL and SHA256. Runtime bundle
 filenames retain their OS distinction. The catalog entry is generated from the
 actual archive; an unavailable asset is not advertised as installable.

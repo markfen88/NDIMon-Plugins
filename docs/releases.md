@@ -20,7 +20,11 @@ python3 scripts/build-plugin.py --plugin tessera --bundle /path/to/tessera-bundl
 
 Commit the reviewed lock and compatibility metadata. The builder writes the host
 archive, generated catalog-entry JSON and merged SHA256SUMS under `dist/`.
-Archives place plugin.json directly at their root. The embedded runtime identity
+Transport filenames replace `~` with `-` for GitHub; manifest/catalog versions
+retain Debian ordering. Use static catalogs with explicit versions. If downloading
+a public runtime bundle to rebuild a plugin, save it under the native filename
+recorded by `bundles.lock.json` (`~beta`); the public asset alias uses `-beta`.
+This rename changes no archive bytes or embedded identity. Archives place plugin.json directly at their root. The embedded runtime identity
 and checksum are also written inside each plugin archive for root-hook verification.
 
 The current human release tag is `tessera-v0.2.0-beta`; the host manifest uses

@@ -91,7 +91,10 @@ elif args.bundle:
 
 epoch = int(os.environ.get('SOURCE_DATE_EPOCH', '0'))
 args.output.mkdir(parents=True, exist_ok=True)
-name = f"{args.plugin}-plugin_{manifest['version']}_{arch}.tar.gz"
+# Transport filenames use hyphens: GitHub rewrites tildes on upload.
+# The manifest/catalog retain the exact Debian-ordered version.
+asset_version = manifest['version'].replace('~', '-')
+name = f"{args.plugin}-plugin_{asset_version}_{arch}.tar.gz"
 dest = args.output / name
 with dest.open('wb') as stream, gzip.GzipFile(filename='', fileobj=stream, mode='wb', mtime=epoch) as zipped:
     with tarfile.open(fileobj=zipped, mode='w') as tf:
