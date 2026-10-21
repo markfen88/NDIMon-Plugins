@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "version": "0.1.0",
+  "title": "Example plugin",
+  "min_ndimon": "1.3.0",
+  "icon": "bi-puzzle",
+  "routes": "routes.js",
+  "ui": "ui.html",
+  "backup": null
+}

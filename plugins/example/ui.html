@@ -1,0 +1,12 @@
+<section><h2>Example plugin</h2><p data-status>Ready.</p></section>
+<script>
+window.NDIMON_PLUGIN_INIT_example = function(pane) {
+  let disposed = false;
+  window.NDIMON.get('/v1/plugins/example/status').then(result => {
+    if (!disposed) pane.querySelector('[data-status]').textContent = result.message || 'Ready';
+  }).catch(() => {
+    if (!disposed) pane.querySelector('[data-status]').textContent = 'Status unavailable';
+  });
+  return () => { disposed = true; };
+};
+</script>
