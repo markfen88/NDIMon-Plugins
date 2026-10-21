@@ -269,6 +269,12 @@ For Forgejo, assets are `<name>-plugin_<version>_<arm64|amd64>.tar.gz` plus
 `SHA256SUMS` with exact asset names. The tessera add-on's `tessera-bundle_...`
 archive belongs inside its plugin archive and is not a plugin feed asset.
 
+For GitHub downloads, use a static catalog with the exact manifest version.
+GitHub rewrites tildes in uploaded asset names, so this repository uses `-beta`
+filenames while the catalog declares the Debian-ordered `~beta` version.
+The generic releases API reader derives versions from filenames; it cannot
+recover that distinction and does not filter OS. Use Tessera's platform catalogs.
+
 Feeds time out within 10 seconds. They are refreshed on demand and at most every
 15 minutes by the background cache timer, outside the status loop. Downloads
 are streamed with SHA256 verification, a 200 MiB size cap, and a five-minute
