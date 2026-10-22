@@ -87,6 +87,8 @@ combination. It has no automatic untested-build warning matrix. The exact-build
 list starts empty; packaging/control checks do not certify external hardware.
 
 Updating the runtime requires a new reviewed bundle pin and plugin release.
+After upgrading from 0.2.0-beta to 0.2.1, reboot the appliance to activate the
+new daemon and local audio clients together.
 Disable returns to the legacy audio path; ordinary removal preserves settings.
 Purge can remove Tessera configuration, so export a backup before using it.
 See [upgrade/removal details](docs/tessera.md).

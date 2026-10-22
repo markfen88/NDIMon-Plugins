@@ -63,6 +63,11 @@ the saved graph. No automatic HDMI/Dante delay measurement is provided.
 
 ## Upgrade and removal
 
+After upgrading from 0.2.0-beta to 0.2.1, reboot the appliance before using
+network audio. The daemon and local audio clients must load the new clock
+overlay together; new client connections reject an old daemon until it is
+restarted. Schedule this for a maintenance window because audio/video pause.
+
 Update through Plugins using the matching platform catalog/archive. The API
 restarts to load updated plugin code; a running old Tessera daemon can need an
 explicit restart to activate its replacement binary. Choose a deliberate audio
