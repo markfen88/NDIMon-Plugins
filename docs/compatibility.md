@@ -3,12 +3,12 @@
 The host plugin and Rust runtime are independently versioned products.
 
 - NDIMon minimum: 1.3.0, in the plugin manifest.
-- Plugin: 0.2.0~beta1.
-- Runtime source: 0.2.0-beta; native package: 0.2.0~beta-1.
+- Plugin: 0.2.1.
+- Runtime source: 0.2.1; native package: 0.2.1-1.
 - Local control protocol: version 1.
 - Audio engine: 48 kHz; plugin device channels: 1–16 per direction.
-- Static flows are supported; vendor-controller subscriptions and automatic
-  lip-sync are unavailable.
+- Static flows and the first-device Controller compatibility runtime are included.
+  Automatic subscriptions and lip-sync remain unsupported.
 - NDIMon owns OS networking; the standalone Tessera network editor must not
   overwrite a hosted appliance's configuration.
 

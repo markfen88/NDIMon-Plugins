@@ -12,8 +12,8 @@ primary graphs can refuse legacy edits rather than silently replace a mix.
 ## Bundle and ownership
 
 The optional plugin contains the host adapter, its settings UI and a precompiled
-Tessera runtime bundle. The current plugin is `0.2.0~beta1` with an
-runtime `0.2.0-beta` (`0.2.0~beta-1` packages), requiring NDIMon `1.3.0` or newer.
+Tessera runtime bundle. The current plugin is `0.2.1` with an
+runtime `0.2.1` (`0.2.1-1` packages), requiring NDIMon `1.3.0` or newer.
 Choose a Debian 13 amd64 or experimental Ubuntu 24.04 arm64 archive using the
 [platform guide](platforms.md). These archives cannot cross OS boundaries.
 Install the matching plugin archive through Plugins. A core update does not
@@ -49,7 +49,8 @@ sustained clock stability and external hardware interoperability are not certifi
 
 Set the device name, encoding, latency and channel counts in Device. Names may contain up to 31 UTF-8 bytes. Device latency is in microseconds; input synchronization delay is separately set in milliseconds. Disruptive device changes display the daemon's impact information and require confirmation. Clock role and priority changes occur only when their Save buttons are pressed. The page reads clock state, offset, interface and software/hardware timestamping from the daemon.
 
-Flows are static. Automatic vendor-controller subscriptions are unavailable. Configure a matching Tessera peer or an externally prepared hardware peer: direction, peer unicast IPv4 address and UDP port (1024–65535). Every flow uses every device channel in its direction, so both ends must agree on channel count. Only one RX flow can occupy those RX channels; multiple TX flows may send them to different peers. RX can optionally accept any source instead of limiting reception to a peer. Save flows validates the entire set before applying it. Removing a row takes effect only after Save flows.
+The bundled runtime enables Controller compatibility for the first logical device.
+Automatic subscriptions remain unsupported; static flows remain available. Configure a matching Tessera peer or an externally prepared hardware peer: direction, peer unicast IPv4 address and UDP port (1024–65535). Every flow uses every device channel in its direction, so both ends must agree on channel count. Only one RX flow can occupy those RX channels; multiple TX flows may send them to different peers. RX can optionally accept any source instead of limiting reception to a peer. Save flows validates the entire set before applying it. Removing a row takes effect only after Save flows.
 
 The plugin's legacy Network input delay (0–2000 ms) and four-gain routing
 controls project only the primary output. Prefer Outputs for independent
@@ -61,6 +62,11 @@ require explicit `normalize_matrix:true` confirmation. These refusals preserve
 the saved graph. No automatic HDMI/Dante delay measurement is provided.
 
 ## Upgrade and removal
+
+After upgrading from 0.2.0-beta to 0.2.1, reboot the appliance before using
+network audio. The daemon and local audio clients must load the new clock
+overlay together; new client connections reject an old daemon until it is
+restarted. Schedule this for a maintenance window because audio/video pause.
 
 Update through Plugins using the matching platform catalog/archive. The API
 restarts to load updated plugin code; a running old Tessera daemon can need an

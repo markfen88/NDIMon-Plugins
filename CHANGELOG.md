@@ -1,5 +1,16 @@
 # Plugin releases
 
+## Tessera 0.2.1
+
+- Pin the native Tessera 0.2.1 runtime with Controller compatibility and device
+  discovery enabled by default, portal Services visible, and initial password
+  `tessera` on fresh installs. Existing passwords are preserved.
+- Include the NTP-independent media clock and local clock overlay layout 2.0.
+  Upgrade and restart the daemon and local audio clients together.
+- Keep NDIMon 1.3.0 as the minimum host; no NDIMon host update is required.
+- The existing Controller runtime covers the first logical device. External
+  hardware audio and sustained clock behavior remain experimental.
+
 ## Tessera 0.2.0~beta1
 
 - First separate public Tessera host-plugin release, for NDIMon 1.3.0 or newer.
