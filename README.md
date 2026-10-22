@@ -14,18 +14,18 @@ Updating either source repository does not automatically alter an installed devi
 [Compatibility](docs/compatibility.md) · [Author plugins](docs/plugin-authoring.md) ·
 [Build/release](docs/releases.md)
 
-## Current beta
+## Current release
 
 | Item | Version |
 |---|---|
-| Tessera source release | 0.2.0-beta |
-| Tessera native runtime packages | 0.2.0~beta-1 |
-| Tessera host plugin | 0.2.0~beta1 |
+| Tessera source release | 0.2.1 |
+| Tessera native runtime packages | 0.2.1-1 |
+| Tessera host plugin | 0.2.1 |
 | Minimum NDIMon | 1.3.0 |
 | Local Tessera control protocol | 1 |
 
-Tildes give correct Debian version ordering: beta packages/plugins sort before
-an eventual final release. The source tag uses the human-facing beta name.
+The plugin patch is released independently of NDIMon. Runtime package 0.2.1-1
+is pinned by exact source commit and checksum.
 
 Published platforms are listed in [platforms](docs/platforms.md) and
 `bundles.lock.json`. Choose the complete OS/version/architecture combination,

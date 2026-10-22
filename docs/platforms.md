@@ -18,8 +18,7 @@ release. Do not substitute another platform's archive. A source build requires
 its own native bundle pin and compatibility entry.
 
 Each download archive uses the name
-`tessera-plugin_0.2.0-beta1_<arch>.tar.gz`. Download filenames use `-beta`
-because GitHub rewrites `~`; the manifest and catalog keep `0.2.0~beta1`.
+`tessera-plugin_0.2.1_<arch>.tar.gz`. The manifest, catalog and transport filename all use patch version `0.2.1`.
 Use these static platform catalogs, rather than deriving a version from a
 GitHub release asset name. Each catalog additionally states
 the platform, version, byte size, exact download URL and SHA256. Runtime bundle

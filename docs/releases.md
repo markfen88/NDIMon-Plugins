@@ -27,8 +27,8 @@ recorded by `bundles.lock.json` (`~beta`); the public asset alias uses `-beta`.
 This rename changes no archive bytes or embedded identity. Archives place plugin.json directly at their root. The embedded runtime identity
 and checksum are also written inside each plugin archive for root-hook verification.
 
-The current human release tag is `tessera-v0.2.0-beta`; the host manifest uses
-Debian-ordered `0.2.0~beta1`. The builder accepts `--release-tag` for a later release.
+The current human release tag is `tessera-v0.2.1`; the host manifest uses
+Debian-ordered `0.2.1`. The builder accepts `--release-tag` for a later release.
 Increment the manifest/compatibility version for changed plugin source or a new
 runtime bundle; do not replace an installed version's contents silently.
 

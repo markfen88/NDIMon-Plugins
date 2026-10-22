@@ -107,7 +107,7 @@ with dest.open('wb') as stream, gzip.GzipFile(filename='', fileobj=stream, mode=
             info.mtime = epoch
             tf.addfile(info, io.BytesIO(data))
 sha = hashlib.sha256(dest.read_bytes()).hexdigest()
-release_tag = args.release_tag or ('tessera-v0.2.0-beta' if args.plugin == 'tessera' else f"{args.plugin}-v{manifest['version']}")
+release_tag = args.release_tag or f"{args.plugin}-v{manifest['version']}"
 from urllib.parse import quote
 entry = {'name': args.plugin, 'version': manifest['version'], 'arch': arch,
          'asset_url': f"https://github.com/markfen88/NDIMon-Plugins/releases/download/{quote(release_tag, safe='')}/{quote(dest.name, safe='')}",
