@@ -8,7 +8,7 @@ The host plugin and Rust runtime are independently versioned products.
 - Local control protocol: version 1.
 - Audio engine: 48 kHz; plugin device channels: 1–16 per direction.
 - Static flows and the first-device Controller compatibility runtime are included.
-  Automatic lip-sync is unavailable.
+  Automatic subscriptions and lip-sync remain unsupported.
 - NDIMon owns OS networking; the standalone Tessera network editor must not
   overwrite a hosted appliance's configuration.
 
