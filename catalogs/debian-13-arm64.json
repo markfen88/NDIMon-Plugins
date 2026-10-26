@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "plugins": [
+    {
+      "name": "tessera",
+      "version": "0.3.0",
+      "arch": "arm64",
+      "asset_url": "https://github.com/markfen88/NDIMon-Plugins/releases/download/tessera-v0.3.0/tessera-plugin_0.3.0_arm64.tar.gz",
+      "sha256": "fefedfcc2103ee931805ebf9e68af50e14e8135932d5b76061e17d778d7c0c45",
+      "size": 36578996,
+      "platform": {
+        "id": "debian",
+        "codename": "trixie",
+        "version_id": "13",
+        "systemd_min": 253
+      }
+    }
+  ]
+}
