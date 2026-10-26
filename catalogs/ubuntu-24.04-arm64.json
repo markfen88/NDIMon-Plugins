@@ -3,11 +3,11 @@
   "plugins": [
     {
       "name": "tessera",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "arch": "arm64",
-      "asset_url": "https://github.com/markfen88/NDIMon-Plugins/releases/download/tessera-v0.2.1/tessera-plugin_0.2.1_arm64.tar.gz",
-      "sha256": "cdeb1c50cbaf3ae27857640b6fc5cf2bef4214220a70ef27cc793f2253f22a11",
-      "size": 4917496,
+      "asset_url": "https://github.com/markfen88/NDIMon-Plugins/releases/download/tessera-v0.3.0-ubuntu-24.04/tessera-plugin_0.3.0_arm64.tar.gz",
+      "sha256": "32a5b74155cada1bcc2daf47f4c7ea5c76ca01c9adde1d91b64eb2ef55ee9426",
+      "size": 36592336,
       "platform": {
         "id": "ubuntu",
         "codename": "noble",

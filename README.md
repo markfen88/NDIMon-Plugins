@@ -2,13 +2,15 @@
 
 Public plugin sources, installation guides, platform catalogs and precompiled
 plugin archives for [NDIMon-R](https://github.com/markfen88/NDIMon-R).
-The first integration is **Tessera network audio**. NDIMon 1.3.0 or newer is required.
+The first integration is **Tessera network audio**. NDIMon-R 1.4.0 or newer is required.
 
-The Tessera host adapter/UI belongs here. The modular Rust daemon, ALSA backend,
-standalone portal and runtime packages belong to
-[Tessera](https://github.com/markfen88/Tessera). A plugin archive includes an exact
-precompiled Tessera bundle; installation does not compile it on the appliance.
-Updating either source repository does not automatically alter an installed device.
+The Tessera host manifest and UI fragment belong here. The modular Rust daemon,
+ALSA backend, standalone portal and runtime packages belong to
+[Tessera](https://github.com/markfen88/Tessera). The control-plane domain that
+configures Tessera (state, rendering and the privileged lifecycle) is part of
+NDIMon-R. A plugin archive includes an exact precompiled Tessera bundle;
+installation does not compile it on the appliance. Updating either source
+repository does not automatically alter an installed device.
 
 [Install/configure Tessera](docs/tessera.md) · [Platforms](docs/platforms.md) ·
 [Compatibility](docs/compatibility.md) · [Author plugins](docs/plugin-authoring.md) ·
@@ -18,49 +20,57 @@ Updating either source repository does not automatically alter an installed devi
 
 | Item | Version |
 |---|---|
-| Tessera source release | 0.2.1 |
-| Tessera native runtime packages | 0.2.1-1 |
-| Tessera host plugin | 0.2.1 |
-| Minimum NDIMon | 1.3.0 |
+| Tessera source release | 0.3.0 |
+| Tessera native runtime bundle | 0.3.0-1 |
+| Tessera host plugin | 0.3.0 |
+| Minimum NDIMon-R | 1.4.0 |
 | Local Tessera control protocol | 1 |
 
-The plugin patch is released independently of NDIMon. Runtime package 0.2.1-1
-is pinned by exact source commit and checksum.
+The plugin is released independently of NDIMon-R. The runtime bundle is pinned by
+exact source commit and checksum in [`bundles.lock.json`](bundles.lock.json), and
+[`compatibility.json`](compatibility.json) records the feature and API assumptions.
 
-Published platforms are listed in [platforms](docs/platforms.md) and
-`bundles.lock.json`. Choose the complete OS/version/architecture combination,
-not architecture alone. The NDIMon feed client filters architecture, not OS;
-use the matching platform catalog. Ubuntu support remains experimental.
+Published platforms are listed in [platforms](docs/platforms.md). Choose the
+complete OS/version/architecture combination, not architecture alone. The NDIMon-R
+feed client filters architecture, not OS; use the matching platform catalog.
+Ubuntu support remains experimental.
 
 ## Install an archive
 
-1. Download the archive for your host and its trusted release `SHA256SUMS`.
+1. Download the archive for your host and the release's `SHA256SUMS`.
 2. Verify the checksum before upload. A checksum protects integrity, not the
-   identity of an untrusted publisher. Plugin hooks are privileged code.
-3. Open **NDIMon → Plugins**, enter `tessera`, choose the archive and select
-   **Upload and install**. The API briefly restarts; its requested enable runs
-   on the next API startup.
-4. Open the Tessera tab for device/clock/flow/channel-name configuration.
+   identity of an untrusted publisher. The runtime bundle is installed by
+   privileged code on the device.
+3. Open **NDIMon-R → Plugins**, enter `tessera`, choose the archive and select
+   **Upload and install**. Before anything on the device changes, the privileged
+   daemon checks the embedded runtime bundle against its pin.
+4. Open the Tessera tab for device, clock, flow and channel-name configuration.
 5. Open **Outputs → an output → Advanced → Audio** for inputs, destinations,
-   gains and delays. Saving choices does not select audio v2. Activate v2
-   explicitly and confirm its decoder restart.
+   gains and delays. Saving an output's routes selects audio engine v2 in the same
+   change; when v1 is running the page shows the decoder restart and asks first.
 
-A new plugin installation does not change the selected NDI source. Installing
-the plugin and activating experimental audio are separate operations.
+A new plugin installation does not change the selected NDI source. The installer
+does not restart a running `tesserad`: restart it from the plugin (this interrupts
+network audio) or reboot to run a newly installed runtime.
 
-## Install/update from a catalog
+## Install/update from a catalog or release feed
 
-Catalogs are ordinary HTTPS JSON files supported by NDIMon 1.3.0. Select the
-platform-specific URL in [platforms](docs/platforms.md). From the NDIMon checkout:
+NDIMon-R reads two feed formats from the `plugin_feeds` list in its device
+settings (up to 32 URLs, set with the `set_device` command; with no feed the
+Plugins page is upload-only):
 
-```sh
-sudo bash install.sh --plugin-feed https://raw.githubusercontent.com/markfen88/NDIMon-Plugins/main/catalogs/ubuntu-24.04-arm64.json --with-plugin tessera
-```
+- a static platform catalog from this repository, for example
+  `https://raw.githubusercontent.com/markfen88/NDIMon-Plugins/main/catalogs/debian-13-amd64.json`
+- the GitHub release listing
+  `https://api.github.com/repos/markfen88/NDIMon-Plugins/releases?limit=5`
 
-That example is for **Ubuntu 24.04 arm64 only**. The core installer also rebuilds
-NDIMon; use the web upload flow when a core reinstall is not intended. Feed URLs
-are stored in `plugin_feeds` in device settings; an empty list means upload-only.
-Use Plugins → Update for newer matching plugin versions. Back up settings first.
+Use **one** matching catalog. The release listing filters by CPU architecture and
+does not know the OS, so use it only where the architecture identifies the platform.
+On arm64 that is not the case (Debian 13 and Ubuntu 24.04 both have an archive), so an
+arm64 device must use its platform catalog.
+The feed command and its authentication are described in
+[plugin authoring](docs/plugin-authoring.md#feeds). Use Plugins → Update for newer
+matching versions, and back up settings first.
 
 ## Routing and networks
 
@@ -68,7 +78,7 @@ Use Plugins → Update for newer matching plugin versions. Back up settings firs
   including HDMI plus Tessera together.
 - Inputs have gain and delay; destinations have independent delay. Disabled
   outputs retain saved selections. Delays are manual, not measured lip-sync.
-- Define VLANs/management in NDIMon Settings → Network, select the shared NDI
+- Define VLANs and management in NDIMon-R Settings → Network, select the shared NDI
   network on NDI, and select Tessera's network inside the plugin. These are one
   recoverable host network transaction. The plugin does not create a second
   management plane.
@@ -79,18 +89,19 @@ Use Plugins → Update for newer matching plugin versions. Back up settings firs
 
 `plugin.json` declares `min_ndimon`. `compatibility.json` records the plugin,
 runtime and control API; `bundles.lock.json` pins each native archive by SHA256
-and public source commit. The builder refuses a changed declared runtime or
+and public source commit. The plugin builder refuses a changed declared runtime or
 control protocol until the compatibility record is updated.
 
-The current host enforces a minimum version, not every exact tested-build
-combination. It has no automatic untested-build warning matrix. The exact-build
-list starts empty; packaging/control checks do not certify external hardware.
+The host enforces a minimum version, not every exact tested-build combination. The
+exact-build list starts empty; packaging and control checks do not certify
+external hardware.
 
-Updating the runtime requires a new reviewed bundle pin and plugin release.
-After upgrading from 0.2.0-beta to 0.2.1, reboot the appliance to activate the
-new daemon and local audio clients together.
-Disable returns to the legacy audio path; ordinary removal preserves settings.
-Purge can remove Tessera configuration, so export a backup before using it.
+Plugin archives for Tessera 0.2.x cannot be installed on NDIMon-R 1.4.0 and the
+0.2.x runtime bundles are refused: the device requires the runtime's own
+`tessera-bundle` installer, which Tessera 0.3.0 introduced. Updating the runtime
+requires a new reviewed bundle pin and plugin release. Disable returns to the
+legacy audio path; ordinary removal preserves settings. Purge can remove Tessera
+configuration, so export a backup before using it.
 See [upgrade/removal details](docs/tessera.md).
 
 ## Limits
@@ -104,35 +115,24 @@ rather than forming a stereo pair.
 
 ## Build a plugin
 
-Python 3 and the standard library are sufficient to assemble a pinned archive:
-
-```sh
-python3 scripts/pin-bundle.py /path/to/tessera-bundle_<version>_<arch>.tar.gz
-python3 scripts/build-plugin.py --plugin tessera --bundle /path/to/tessera-bundle_<version>_<arch>.tar.gz
-# Minimal authoring example, without a runtime bundle:
-python3 scripts/build-plugin.py --plugin example
-```
-
-The runtime bundle must first be built natively from its matching public Tessera
-source. Copying a new binary into an old archive breaks its identity. Output goes
-to ignored `dist/`, with checksums and catalog-entry metadata. Publishing is an
-explicit attended release operation; no automatic GitHub mirror is configured.
+Plugin archives are assembled with `cargo xtask build-plugin` from an NDIMon-R
+checkout; this repository holds the plugin sources, the pins and the published
+catalogs. See [Building and releasing](docs/releases.md).
 
 ## Source layout
 
 | Path | Purpose |
 |---|---|
-| `plugins/tessera/` | Host routes/UI, client, flows, backup and fixed privileged hooks |
-| `plugins/example/` | Minimal author template |
+| `plugins/tessera/` | The Tessera manifest and UI fragment |
 | `compatibility.json` | Declared plugin/runtime/control compatibility |
 | `bundles.lock.json` | Exact per-platform runtime pins |
 | `catalogs/` | Platform-specific install/update feeds |
-| `scripts/` | Explicit pinning/archive assembly |
 | `docs/` | Operator and author guides |
 
-NDIMon 1.3.0 contains an older embedded plugin source snapshot. New standalone
-plugin releases are maintained here and installed through the host framework;
-the core does not automatically synchronize a source checkout.
+The NDIMon-R packages carry a copy of the Tessera manifest and fragment for a
+device that has accepted Tessera; new standalone plugin releases are maintained
+here and installed through the host framework. The core does not automatically
+synchronize a source checkout.
 
 ## License
 
