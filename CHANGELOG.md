@@ -1,5 +1,26 @@
 # Plugin releases
 
+## Tessera 0.5.2
+
+- Pin the Tessera 0.5.2 runtime (packages `0.5.2-1`, built, signed and published
+  in public from Tessera's `v0.5.2` tag). The control wire version (1) and the
+  bundle installer's integration contract are unchanged since 0.3.0; the archive
+  layout is the same.
+- **Upgrade every Tessera device on the network to 0.5.2 together.** Tessera 0.5
+  changed the PTPv1 media clock: stratum 0x2A to 0x2D instead of 4 (hardware
+  leaders keep precedence), Sync every 250 ms instead of every second, DSCP 46
+  instead of 8 for general messages. A 0.3.x device wins every election against
+  0.5.x devices, so a network that mixes them is not supported. Update switch QoS
+  rules that match DSCP 8.
+- Update NDIMon-R to 1.4.1 first: its plugin install restarts `tesserad` on the new
+  runtime and refuses a `follower` with a Preferred Leader priority (below 64),
+  which Tessera 0.5 refuses too. On NDIMon-R 1.4.0, restart `tesserad` from the
+  plugin after the update.
+- Going back to 0.3.0: Tessera's installer refuses a downgrade; remove the plugin
+  without purging, then install the 0.3.0 archive.
+- Archives: Debian 13 amd64 and arm64 under `tessera-v0.5.2`, and the experimental
+  Ubuntu 24.04 arm64 archive (same file name) under `tessera-v0.5.2-ubuntu-24.04`.
+
 ## Tessera 0.3.0
 
 - Pin the native Tessera 0.3.0 runtime (packages `0.3.0-1`). The bundle now carries
