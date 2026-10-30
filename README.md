@@ -20,9 +20,9 @@ repository does not automatically alter an installed device.
 
 | Item | Version |
 |---|---|
-| Tessera source release | 0.3.0 |
-| Tessera native runtime bundle | 0.3.0-1 |
-| Tessera host plugin | 0.3.0 |
+| Tessera source release | 0.5.2 |
+| Tessera native runtime bundle | 0.5.2-1 |
+| Tessera host plugin | 0.5.2 |
 | Minimum NDIMon-R | 1.4.0 |
 | Local Tessera control protocol | 1 |
 

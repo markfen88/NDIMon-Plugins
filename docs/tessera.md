@@ -18,8 +18,8 @@ in the NDIMon-R documentation.
 ## Bundle and ownership
 
 The optional plugin contains the host manifest, its settings UI and a precompiled
-Tessera runtime bundle. The current plugin is `0.3.0` with runtime `0.3.0`
-(`0.3.0-1` packages), requiring NDIMon-R `1.4.0` or newer. Choose a Debian 13 amd64,
+Tessera runtime bundle. The current plugin is `0.5.2` with runtime `0.5.2`
+(`0.5.2-1` packages), requiring NDIMon-R `1.4.0` or newer (1.4.1 recommended). Choose a Debian 13 amd64,
 Debian 13 arm64 or experimental Ubuntu 24.04 arm64 archive using the [platform guide](platforms.md).
 These archives cannot cross OS boundaries. Install the matching plugin archive
 through Plugins. A core update does not automatically download, compile or replace
@@ -85,10 +85,21 @@ NDIMon-R reports a flow ownership conflict.
   in place and are recognised as the native Tessera plugin; the old JavaScript files
   are no longer used. NDIMon-R reports a flow ownership conflict until you install
   a plugin archive built from Tessera 0.3.0 or later.
-- **Updating the runtime.** Install the newer plugin archive from Plugins. The
-  installer does not restart a running daemon; restart `tesserad` from the plugin
-  (it asks before interrupting audio) or reboot, and expect audio to be
-  interrupted. Choose a deliberate maintenance window.
+- **Updating the runtime.** Update NDIMon-R to 1.4.1 or later first, then install
+  the newer plugin archive from Plugins. The update asks before its services
+  restart and, on NDIMon-R 1.4.1 or later, restarts `tesserad` on the new runtime;
+  on 1.4.0 restart `tesserad` from the plugin (it asks before interrupting audio)
+  or reboot. Expect audio to be interrupted; choose a deliberate maintenance window.
+- **Tessera 0.5.2: upgrade every Tessera device on the network together.**
+  Tessera 0.5 changed the PTPv1 media clock (stratum 0x2A to 0x2D instead of 4,
+  Sync every 250 ms instead of every second, general messages DSCP 46 instead of
+  8). A 0.3.x device wins every election against 0.5.x devices, so a network that
+  mixes them is not supported: upgrade NDIMon-R devices, standalone Tessera hosts
+  and speakers in one window, and update switch QoS rules that match DSCP 8. A
+  clock priority below 64 makes a Preferred Leader, which a `follower` cannot be.
+- **Going back.** Tessera's installer refuses a downgrade: remove the plugin
+  without purging, then install the archive of the earlier runtime. On a network
+  that went back, every device must go back.
 - **Removal.** Disable returns to v1; saved selections remain. Normal removal
   preserves configuration. Purge can remove Tessera configuration and state,
   including flow files. Export a backup before removing or purging a plugin.

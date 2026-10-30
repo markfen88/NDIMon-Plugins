@@ -39,9 +39,9 @@ plugin archive needs no such host.
 A `~` in a manifest version becomes `-` in the file name. Builds are deterministic
 for the same inputs (`SOURCE_DATE_EPOCH` defaults to 0).
 
-The current human release tags are `tessera-v0.3.0` (Debian 13) and
-`tessera-v0.3.0-ubuntu-24.04`; the host manifest uses
-`0.3.0`. Increment the manifest and compatibility version for changed plugin
+The current human release tags are `tessera-v0.5.2` (Debian 13) and
+`tessera-v0.5.2-ubuntu-24.04`; the host manifest uses
+`0.5.2`. Increment the manifest and compatibility version for changed plugin
 source or a new runtime bundle; do not replace an installed version's contents
 silently.
 
