@@ -3,11 +3,11 @@
   "plugins": [
     {
       "name": "tessera",
-      "version": "0.5.2",
+      "version": "0.6.0-1",
       "arch": "arm64",
-      "asset_url": "https://github.com/markfen88/NDIMon-Plugins/releases/download/tessera-v0.5.2/tessera-plugin_0.5.2_arm64.tar.gz",
-      "sha256": "ccf2f92dd9c1fb89aae29878d36b430e8dea901eec7827852e817fe582ac4560",
-      "size": 38870536,
+      "asset_url": "https://github.com/markfen88/NDIMon-Plugins/releases/download/tessera-v0.6.0/tessera-plugin_0.6.0-1_arm64.tar.gz",
+      "sha256": "78b53d53ea27aab440a8c5b40682ef9b6b0ee1a7c8097b3967c22c657168ccd5",
+      "size": 43416595,
       "platform": {
         "id": "debian",
         "codename": "trixie",

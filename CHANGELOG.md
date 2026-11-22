@@ -1,5 +1,31 @@
 # Plugin releases
 
+## Tessera 0.6.0
+
+- Pin the Tessera 0.6.0 runtime (packages `0.6.0-1`, built, signed and published
+  in public from Tessera's `v0.6.0` tag, commit `62b735d`). The plugin archive is
+  `0.6.0-1`. The control wire version stays 1: 0.6.0's control additions are
+  additive.
+- **Requires NDIMon-R 1.5.0** (`min_ndimon` 1.5.0). Earlier NDIMon-R releases lock
+  Tessera's flows, which stops the controller runtime from starting, and lack the
+  routing API of the new **Routing** card. Update NDIMon-R first, then install the
+  plugin.
+- New in the plugin page: a **Routing** card (controller routing between
+  discovered devices, trusted source devices, review of an interrupted change)
+  and the network output latency on the Status card.
+- Tessera 0.6.0 adds a host router, mixers, per-channel and per-port gain and
+  mute, a post-mix output stage, local monitoring and hardware control surfaces;
+  these are managed in Tessera's portal and `tesseractl`, not in NDIMon-R's UI
+  yet. See [Tessera's changelog](https://github.com/markfen88/Tessera/blob/main/CHANGELOG.md).
+- The PTP clock is unchanged from 0.5, so 0.5 and 0.6 devices can share a
+  network; mixing 0.3 with 0.5 or 0.6 remains unsupported. Installing over 0.5.2
+  restarts `tesserad` once.
+- Going back to 0.5.x: remove the plugin without purging, then install the 0.5.2
+  archive; settings only 0.6 knows (gain, mute, router, mixer, surfaces) are not
+  carried back.
+- Archives: Debian 13 amd64 and arm64 under `tessera-v0.6.0`, and the experimental
+  Ubuntu 24.04 arm64 archive (same file name) under `tessera-v0.6.0-ubuntu-24.04`.
+
 ## Tessera 0.5.2
 
 - Pin the Tessera 0.5.2 runtime (packages `0.5.2-1`, built, signed and published
