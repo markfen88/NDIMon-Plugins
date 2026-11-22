@@ -2,9 +2,9 @@
 
 The host plugin and Rust runtime are independently versioned products.
 
-- NDIMon-R minimum: 1.4.0, in the plugin manifest.
-- Plugin: 0.5.2.
-- Runtime source: 0.5.2; native package: 0.5.2-1.
+- NDIMon-R minimum: 1.5.0, in the plugin manifest.
+- Plugin: 0.6.0-1.
+- Runtime source: 0.6.0; native package: 0.6.0-1.
 - Local control protocol: version 1.
 - Audio engine: 48 kHz; plugin device channels: 1–16 per direction.
 - Static flows and the first-device Controller compatibility runtime are included.

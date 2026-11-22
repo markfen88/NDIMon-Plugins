@@ -2,7 +2,7 @@
 
 Public plugin sources, installation guides, platform catalogs and precompiled
 plugin archives for [NDIMon-R](https://github.com/markfen88/NDIMon-R).
-The first integration is **Tessera network audio**. NDIMon-R 1.4.0 or newer is required.
+The first integration is **Tessera network audio**. The current plugin, 0.6.0-1, requires NDIMon-R 1.5.0 or newer.
 
 The Tessera host manifest and UI fragment belong here. The modular Rust daemon,
 ALSA backend, standalone portal and runtime packages belong to
@@ -20,10 +20,10 @@ repository does not automatically alter an installed device.
 
 | Item | Version |
 |---|---|
-| Tessera source release | 0.5.2 |
-| Tessera native runtime bundle | 0.5.2-1 |
-| Tessera host plugin | 0.5.2 |
-| Minimum NDIMon-R | 1.4.0 |
+| Tessera source release | 0.6.0 |
+| Tessera native runtime bundle | 0.6.0-1 |
+| Tessera host plugin | 0.6.0-1 |
+| Minimum NDIMon-R | 1.5.0 |
 | Local Tessera control protocol | 1 |
 
 The plugin is released independently of NDIMon-R. The runtime bundle is pinned by
@@ -44,7 +44,7 @@ Ubuntu support remains experimental.
 3. Open **NDIMon-R → Plugins**, enter `tessera`, choose the archive and select
    **Upload and install**. Before anything on the device changes, the privileged
    daemon checks the embedded runtime bundle against its pin.
-4. Open the Tessera tab for device, clock, flow and channel-name configuration.
+4. Open the Tessera tab for device, clock, routing, flow and channel-name configuration.
 5. Open **Outputs → an output → Advanced → Audio** for inputs, destinations,
    gains and delays. Saving an output's routes selects audio engine v2 in the same
    change; when v1 is running the page shows the decoder restart and asks first.
@@ -108,8 +108,9 @@ See [upgrade/removal details](docs/tessera.md).
 
 This is beta software. External Dante hardware audio, sustained clock behavior,
 hardware PTP and automatic HDMI/Dante latency matching are not certified.
-Vendor-controller subscriptions, Bluetooth calibration and HDMI ARC/eARC are
-not implemented. Per-output NDI transport/HX/tally/network isolation remain
+Tessera 0.6's host router, mixers, gain/mute stages and control surfaces are
+managed in Tessera's own portal and `tesseractl`, not in NDIMon-R's UI.
+Bluetooth calibration and HDMI ARC/eARC are not implemented. Per-output NDI transport/HX/tally/network isolation remain
 outside this plugin. Full-device/mono endpoints are available; two monos mix
 rather than forming a stereo pair.
 

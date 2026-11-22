@@ -4,6 +4,7 @@ Install and enable the Tessera plugin in **Plugins**, then select its network
 audio tab. Plugin enablement makes the settings page available. It does not by
 itself select experimental audio engine v2. The route editor is **Outputs → an
 output → Advanced → Audio**; device, clock, flow and channel-name configuration
+together with receiver routing
 stays in the plugin. Saving an output's routes selects v2 in the same change: when
 v1 is running, the device reports the impact (a decoder restart that can pause
 video briefly) and the page asks first. **Enable network audio** does the same for
@@ -18,8 +19,8 @@ in the NDIMon-R documentation.
 ## Bundle and ownership
 
 The optional plugin contains the host manifest, its settings UI and a precompiled
-Tessera runtime bundle. The current plugin is `0.5.2` with runtime `0.5.2`
-(`0.5.2-1` packages), requiring NDIMon-R `1.4.0` or newer (1.4.1 recommended). Choose a Debian 13 amd64,
+Tessera runtime bundle. The current plugin is `0.6.0-1` with runtime `0.6.0`
+(`0.6.0-1` packages), requiring NDIMon-R `1.5.0` or newer. Choose a Debian 13 amd64,
 Debian 13 arm64 or experimental Ubuntu 24.04 arm64 archive using the [platform guide](platforms.md).
 These archives cannot cross OS boundaries. Install the matching plugin archive
 through Plugins. A core update does not automatically download, compile or replace
@@ -67,17 +68,23 @@ synchronization delay is separately set in milliseconds. Disruptive device chang
 display the daemon's impact information and require confirmation. Clock role and
 priority changes occur only when their Save buttons are pressed.
 
-The bundled runtime enables Controller compatibility for the first logical device.
-Automatic subscriptions remain unsupported; static flows remain available.
+With Tessera 0.5 or later NDIMon-R runs `tesserad` in Tessera's native device
+role, so controllers (Dante Controller, Tessera portals and the plugin's
+**Routing** card) can route this device's inputs. The Routing card shows the
+transmit channels of every discovered device against the receive inputs of every
+discovered receiver; selecting a crosspoint connects, replaces or disconnects
+after confirmation, and **Trusted source devices** limits which devices may route
+to this one. Static flows remain available.
 Configure a matching Tessera peer or an externally prepared hardware peer:
 direction, peer unicast IPv4 address and UDP port (1024–65535). Every flow uses
 every device channel in its direction, so both ends must agree on channel count.
 Only one RX flow can occupy those RX channels; multiple TX flows may send them to
 different peers. Save flows validates the entire set before applying it.
 
-NDIMon-R keeps the flows under its own control (`[control] locked = ["flows"]`) so
-no other writer changes them. A runtime without that support still works, but
-NDIMon-R reports a flow ownership conflict.
+Flows are not locked: NDIMon-R's static flows stay host configuration, and flows
+a controller installs are observed without being reported as drift. Tessera 0.6's
+host router, mixers, gain/mute stages and control surfaces are managed in
+Tessera's own portal and `tesseractl`; NDIMon-R does not yet expose them.
 
 ## Upgrade and removal
 
@@ -85,12 +92,17 @@ NDIMon-R reports a flow ownership conflict.
   in place and are recognised as the native Tessera plugin; the old JavaScript files
   are no longer used. NDIMon-R reports a flow ownership conflict until you install
   a plugin archive built from Tessera 0.3.0 or later.
-- **Updating the runtime.** Update NDIMon-R to 1.4.1 or later first, then install
-  the newer plugin archive from Plugins. The update asks before its services
-  restart and, on NDIMon-R 1.4.1 or later, restarts `tesserad` on the new runtime;
-  on 1.4.0 restart `tesserad` from the plugin (it asks before interrupting audio)
-  or reboot. Expect audio to be interrupted; choose a deliberate maintenance window.
-- **Tessera 0.5.2: upgrade every Tessera device on the network together.**
+- **Updating the runtime.** Update NDIMon-R to 1.5.0 first (plugin `0.6.0-1`
+  requires it), then install the newer plugin archive from Plugins. The update
+  asks before its services restart and restarts `tesserad` on the new runtime;
+  NDIMon-R 1.5.0 also restarts it once when it first switches a 0.5 or later
+  daemon to the native device role. Expect audio to be interrupted; choose a
+  deliberate maintenance window.
+- **Clock role.** A fresh plugin install starts as PTP `leader` (priority 128);
+  an existing installation keeps its role. Keep exactly one leader per network
+  and switch an added device to `follower` or `auto` when another leader runs.
+- **Tessera 0.5 and 0.6 share a network; 0.3 does not.** The media clock is
+  unchanged between 0.5 and 0.6.
   Tessera 0.5 changed the PTPv1 media clock (stratum 0x2A to 0x2D instead of 4,
   Sync every 250 ms instead of every second, general messages DSCP 46 instead of
   8). A 0.3.x device wins every election against 0.5.x devices, so a network that
@@ -98,8 +110,11 @@ NDIMon-R reports a flow ownership conflict.
   and speakers in one window, and update switch QoS rules that match DSCP 8. A
   clock priority below 64 makes a Preferred Leader, which a `follower` cannot be.
 - **Going back.** Tessera's installer refuses a downgrade: remove the plugin
-  without purging, then install the archive of the earlier runtime. On a network
-  that went back, every device must go back.
+  without purging, then install the archive of the earlier runtime. A 0.5.x
+  daemon refuses the configuration keys 0.6 introduces (`[host_volume]`,
+  `[router]`, `[[mixer]]`, `[[surface]]`, new `[[bridge]]` keys); saved gain,
+  mute, router, mixer and surface settings are not carried back. Going back below
+  0.5 means every device on the network goes back.
 - **Removal.** Disable returns to v1; saved selections remain. Normal removal
   preserves configuration. Purge can remove Tessera configuration and state,
   including flow files. Export a backup before removing or purging a plugin.
